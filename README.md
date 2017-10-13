@@ -11,11 +11,11 @@ imageLoader Example from oracle
   I will be using gitbash.
 
   1. gitbash into eclipse workspace
-  2. git clone https://github.com/KylerSchmidt/ImageLoader.git
+  2. git clone https://github.com/BokahModeler/ImageLoader.git
   3. open eclipse
   4. go to file < open projects from file system
   5. go to eclipse directory and open up the ImageLoader
-  6. MAKE SURE YOU CLICK ON IMAGE LOADER PRACTICE, if this is not directly what is put in eclipse it causes issues.
+  6. MAKE SURE YOU CLICK ON INNER ECLIPSE WORKING DIRECTORY, if this is not directly what is put in eclipse it causes issues.
   7. Done.
 
 # Pushing back to github
@@ -24,7 +24,7 @@ imageLoader Example from oracle
   1. gitbash into eclipse workspace
   2. cd into imageloader
   3. gitbash should show that this is the master branch, this is what we want.
-  4. git add imageloaderpractice (Lets git know what it is you are changing)
+  4. git add <src folder> (Lets git know what it is you are changing)
   5. git commit -m "Insert MEANINGFUL comment here" (for organization in updates)
   6. git push
   
