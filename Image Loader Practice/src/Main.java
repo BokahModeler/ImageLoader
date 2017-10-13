@@ -44,14 +44,106 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class Main extends Component {
            
-    BufferedImage img;
+    BufferedImage img, img2, img3;
  
     public void paint(Graphics g) {
-        g.drawImage(img, 0, 0, null);
+    	
+        int x1=0;
+        int y1=0;
+        int w = img.getWidth();
+        int h = img.getHeight();
+        boolean res = false;
+        
+        
+        //Width removal
+        for (int x = 0; x <= w - 1; x++) {
+            for (int y = 0; y <= h - 1; y++) {
+                if(new Color(img.getRGB(x, y)).getRGB()==-1)
+                {res=false;}
+                else if (!new Color(img.getRGB(x, y)).equals(Color.WHITE)) {
+                    res = true;
+                }
+                if (res) {
+                    for (int p = y; p <= h-1; p++) {
+                   //     img2.setRGB(x1,p,new Color(img.getRGB(x, p)).getRGB());       //crash                 
+                    }
+                    x1++;
+                    res = false;
+                    break;
+                }
+            }
+        }
+        img2=new BufferedImage(x1,h,BufferedImage.TYPE_INT_RGB);
+        x1=0;
+        for (int x = 0; x <= w-1; x++) {
+            for (int y = 0; y <= h-1; y++) {
+                if(new Color(img.getRGB(x, y)).getRGB()==-1)
+                {res=false;}
+                else if (!new Color(img.getRGB(x, y)).equals(Color.WHITE)) {
+                    res = true;
+                }
+                if (res) {
+                    for (int p = 0; p <= h-1; p++) {
+                        img2.setRGB(x1,p,new Color(img.getRGB(x, p)).getRGB());
+                    }
+                    x1++;
+                    res = false;
+                    break;
+                }
+            }
+        }
+        
+        
+        
+        //height removal
+        
+        for (int y = 0; y <= h-1; y++) {
+            System.out.println("Y = "+y);
+            for (int x = 0; x <= x1-1; x++) {
+                System.out.println("("+x+","+y+") : "+img2.getRGB(x, y));
+                if (!new Color(img2.getRGB(x, y)).equals(Color.WHITE)) {
+                    res = true;
+                }
+                if (res) {
+                    for (int p = 0; p <= x1-1; p++) {
+                       img3.setRGB(p,y1,new Color(img2.getRGB(p, y)).getRGB());		//crash
+
+                    }
+                    y1++;
+                    res = false;
+                    break;
+                }
+            }
+        }
+        img3=new BufferedImage(x1,y1,BufferedImage.TYPE_INT_RGB);
+        y1=0;
+        for (int y = 0; y <= h-1; y++) {
+            for (int x = 0; x <= x1-1; x++) {
+                if (!new Color(img2.getRGB(x, y)).equals(Color.WHITE)) {
+                    res = true;
+                }
+                if (res) {
+                    for (int p = 0; p <= x1-1; p++) {
+                       img3.setRGB(p,y1,new Color(img2.getRGB(p, y)).getRGB());
+                    }
+                    y1++;
+                    res = false;
+                    break;
+                }
+            }
+        }
+        
+        img = img3;
+
+        System.out.println("in formatImage");
+        
+
+    	g.drawImage(img, 0, 0, null);
+        
+        
+        
     }
- /*
-  * This is a github test. 
-  */
+    
     public Main() {
        try {
            img = ImageIO.read(new File("strawberry.jpg"));
@@ -60,6 +152,10 @@ public class Main extends Component {
  
     }
  
+    /**
+     * sets the frame to the same size of the image. Later on should have 
+     * image change size with the frame.
+     */
     public Dimension getPreferredSize() {
         if (img == null) {
              return new Dimension(100,100);
