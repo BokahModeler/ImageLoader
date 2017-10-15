@@ -45,6 +45,7 @@ import javax.swing.*;
 public class Main extends Component {
 
 	BufferedImage img, img2, img3;
+	private JTextField txtPath;
 
 	/**
 	 * General method to draw picture
@@ -149,7 +150,36 @@ public class Main extends Component {
 
 	}
 
-	public Main() {
+	public Main(JFrame f) {
+		BufferedImage imgloader = null;
+		
+		txtPath = new JTextField();
+	    txtPath.setBounds(10, 10, 414, 21);
+	    f.getContentPane().add(txtPath);
+	    txtPath.setColumns(10);
+		
+		JButton btnBrowse = new JButton("Browse");
+		btnBrowse.setBounds(10, 41, 87, 23);
+		f.getContentPane().add(btnBrowse);
+		btnBrowse.addActionListener(new ActionListener() {
+		      public void actionPerformed(ActionEvent e) {
+		        JFileChooser fileChooser = new JFileChooser();
+		 
+		        // For Directory
+		        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		 
+		        // For File
+		        //fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		 
+		        fileChooser.setAcceptAllFileFilterUsed(false);
+		 
+		        int rVal = fileChooser.showOpenDialog(null);
+		        if (rVal == JFileChooser.APPROVE_OPTION) {
+		          txtPath.setText(fileChooser.getSelectedFile().toString());
+		        }
+		      }
+		    });
+		
 		try {
 			img = ImageIO.read(new File("strawberry.jpg"));
 		} catch (IOException e) {
@@ -172,6 +202,8 @@ public class Main extends Component {
 
 	public static void main(String[] args) {
 
+		
+		
 		//JFrame is the "frame" of the window
 		JFrame f = new JFrame("Load Image Sample");
 
@@ -181,7 +213,7 @@ public class Main extends Component {
 			}
 		});
 
-		f.add(new Main());
+		f.add(new Main(f));
 		f.pack();
 		f.setVisible(true);
 	}
