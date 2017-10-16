@@ -52,7 +52,9 @@ public class Main extends Component {
 	 */
 	public void paint(Graphics g) {
 
-		img = Crop(img);	//Crops given picture.
+		if (img != null) {
+			img = Crop(img);	//Crops given picture.
+		}
 
 		g.drawImage(img, 0, 100, getWidth(), getHeight() - 100, this);
 		
@@ -77,10 +79,10 @@ public class Main extends Component {
 		        JFileChooser fileChooser = new JFileChooser();
 		 
 		        // For Directory
-		        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		        //fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		 
 		        // For File
-		        //fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		 
 		        fileChooser.setAcceptAllFileFilterUsed(false);
 		 
@@ -88,14 +90,14 @@ public class Main extends Component {
 		        if (rVal == JFileChooser.APPROVE_OPTION) {
 		          txtPath.setText(fileChooser.getSelectedFile().toString());
 		        }
+		        
+				try {
+					img = ImageIO.read(new File(txtPath.getText()));
+				} catch (IOException i) {
+					System.out.println("Image unable to be read in");
+				}
 		      }
 		    });
-		
-		try {
-			img = ImageIO.read(new File("strawberry.jpg"));
-		} catch (IOException e) {
-			System.out.println("Image unable to be read in");
-		}
 
 	}
 
