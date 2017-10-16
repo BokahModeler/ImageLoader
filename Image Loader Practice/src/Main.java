@@ -44,109 +44,19 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class Main extends Component {
 
-	BufferedImage img, img2, img3;
+	BufferedImage img, img2;
 	private JTextField txtPath;
 
 	/**
-	 * General method to draw picture
+	 * Where the picture given is drawn and Cropped.
 	 */
 	public void paint(Graphics g) {
 
-		int x1 = 0;
-		int y1 = 0;
-		int w = img.getWidth();
-		int h = img.getHeight();
-		boolean res = false;
+		img = Crop(img);	//Crops given picture.
 
-		// Width removal
+		g.drawImage(img, 0, 100, getWidth(), getHeight() - 100, this);
 		
-		//While x < width of image
-		for (int x = 0; x <= w - 1; x++) {
-			
-			//While y < height of image
-			for (int y = 0; y <= h - 1; y++) {
-				
-				
-				if (new Color(img.getRGB(x, y)).getRGB() == -1) {
-					res = false;
-				} else if (new Color(img.getRGB(x, y)).getRGB()<-1000000)  {
-					res = true;
-				}
-				//If color isn't part of background
-				if (res) {
-					//from y to the end of picture, remove background
-					for (int p = y; p <= h - 1; p++) {
-						//img2.setRGB(x1,p,new Color(img.getRGB(x,p)).getRGB()); //crash
-					}
-					x1++;
-					res = false;
-					break;
-				}
-			}
-		}
-		img2 = new BufferedImage(x1, h, BufferedImage.TYPE_INT_RGB);
-		x1 = 0;
-		for (int x = 0; x <= w - 1; x++) {
-			for (int y = 0; y <= h - 1; y++) {
-				if (new Color(img.getRGB(x, y)).getRGB() == -1) {
-					res = false;
-				} else if (new Color(img.getRGB(x, y)).getRGB()<-1000000)  {
-					res = true;
-				}
-				if (res) {
-					for (int p = 0; p <= h - 1; p++) {
-						img2.setRGB(x1, p, new Color(img.getRGB(x, p)).getRGB());
-					}
-					x1++;
-					res = false;
-					break;
-				}
-			}
-		}
-
-		// height removal
-
-		for (int y = 0; y <= h - 1; y++) {
-			System.out.println("Y = " + y);
-			for (int x = 0; x <= x1 - 1; x++) {
-				System.out.println("(" + x + "," + y + ") : " + img2.getRGB(x, y));
-				if (new Color(img2.getRGB(x, y)).getRGB()<-1000000)  {
-					res = true;
-				}
-				if (res) {
-					for (int p = 0; p <= x1 - 1; p++) {
-					//	img3.setRGB(p, y1, new Color(img2.getRGB(p, y)).getRGB()); // crash
-
-					}
-					y1++;
-					res = false;
-					break;
-				}
-			}
-		}
-		img3 = new BufferedImage(x1, y1, BufferedImage.TYPE_INT_RGB);
-		y1 = 0;
-		for (int y = 0; y <= h - 1; y++) {
-			for (int x = 0; x <= x1 - 1; x++) {
-				if (new Color(img2.getRGB(x, y)).getRGB()<-1000000)  {
-					res = true;
-				}
-				if (res) {
-					for (int p = 0; p <= x1 - 1; p++) {
-						img3.setRGB(p, y1, new Color(img2.getRGB(p, y)).getRGB());
-					}
-					y1++;
-					res = false;
-					break;
-				}
-			}
-		}
-
-		img = img3;
-
-		System.out.println("in formatImage");
-
-		g.drawImage(img, 0, 0, null);
+		getPreferredSize();
 
 	}
 
@@ -157,6 +67,7 @@ public class Main extends Component {
 	    txtPath.setBounds(10, 10, 414, 21);
 	    f.getContentPane().add(txtPath);
 	    txtPath.setColumns(10);
+	    
 		
 		JButton btnBrowse = new JButton("Browse");
 		btnBrowse.setBounds(10, 41, 87, 23);
@@ -202,8 +113,6 @@ public class Main extends Component {
 
 	public static void main(String[] args) {
 
-		
-		
 		//JFrame is the "frame" of the window
 		JFrame f = new JFrame("Load Image Sample");
 
@@ -216,5 +125,100 @@ public class Main extends Component {
 		f.add(new Main(f));
 		f.pack();
 		f.setVisible(true);
+	}
+	
+	/**
+	 * Takes a picture given and crops white around it.
+	 * @param i Picture to be cropped.
+	 * @return Cropped picture.
+	 */
+	public BufferedImage Crop(BufferedImage i) {
+		BufferedImage i2, i3;
+		int x1 = 0;
+		int y1 = 0;
+		int w = i.getWidth();
+		int h = i.getHeight();
+		boolean res = false;
+
+		// Width removal
+		
+		//While x < width of image
+		for (int x = 0; x <= w - 1; x++) {
+			
+			//While y < height of image
+			for (int y = 0; y <= h - 1; y++) {
+				
+				
+				if (new Color(i.getRGB(x, y)).getRGB() == -1) {
+					res = false;
+				} else if (new Color(i.getRGB(x, y)).getRGB()<-1000000)  {
+					res = true;
+				}
+				//If color isn't part of background
+				if (res) {
+					x1++;
+					res = false;
+					break;
+				}
+			}
+		}
+		i2 = new BufferedImage(x1, h, BufferedImage.TYPE_INT_RGB);
+		x1 = 0;
+		for (int x = 0; x <= w - 1; x++) {
+			for (int y = 0; y <= h - 1; y++) {
+				if (new Color(i.getRGB(x, y)).getRGB() == -1) {
+					res = false;
+				} else if (new Color(i.getRGB(x, y)).getRGB()<-1000000)  {
+					res = true;
+				}
+				if (res) {
+					for (int p = 0; p <= h - 1; p++) {
+						i2.setRGB(x1, p, new Color(i.getRGB(x, p)).getRGB());
+					}
+					x1++;
+					res = false;
+					break;
+				}
+			}
+		}
+
+		// height removal
+
+		for (int y = 0; y <= h - 1; y++) {
+			System.out.println("Y = " + y);
+			for (int x = 0; x <= x1 - 1; x++) {
+				System.out.println("(" + x + "," + y + ") : " + i2.getRGB(x, y));
+				if (new Color(i2.getRGB(x, y)).getRGB()<-1000000)  {
+					res = true;
+				}
+				if (res) {
+					
+					y1++;
+					res = false;
+					break;
+				}
+			}
+		}
+		i3 = new BufferedImage(x1, y1, BufferedImage.TYPE_INT_RGB);
+		y1 = 0;
+		for (int y = 0; y <= h - 1; y++) {
+			for (int x = 0; x <= x1 - 1; x++) {
+				if (new Color(i2.getRGB(x, y)).getRGB()<-1000000)  {
+					res = true;
+				}
+				if (res) {
+					for (int p = 0; p <= x1 - 1; p++) {
+						i3.setRGB(p, y1, new Color(i2.getRGB(p, y)).getRGB());
+					}
+					y1++;
+					res = false;
+					break;
+				}
+			}
+		}
+
+		System.out.println("in formatImage");
+		
+		return i3;
 	}
 }
