@@ -49,17 +49,37 @@ public class Main extends Component {
 	private JTextPane text;
 	private static JFrame f;
 	private boolean second = false;
+	
+	/**
+	 * Getter methods for images
+	 */
+	
+	public BufferedImage getImgFront() {
+		return img;
+	}
+	
+	public BufferedImage getImgSide() {
+		return img2;
+	}
 
 	/**
 	 * Where the picture given is drawn and Cropped.
 	 */
 	public void paint(Graphics g) {
 
-		if (img != null) {
-			img = Crop(img);	//Crops given picture.
+		if (!second) {
+			if (img != null) {
+				img = Crop(img);	//Crops given picture.
+			}
+			g.drawImage(img, 0, 100, getWidth(), getHeight() - 100, this);
+		}
+		else {
+			if (img2 != null) {
+				img2 = Crop(img2);	//Crops given picture.
+			}
+			g.drawImage(img2, 0, 100, getWidth(), getHeight() - 100, this);
 		}
 
-		g.drawImage(img, 0, 100, getWidth(), getHeight() - 100, this);
 		g.setFont(new Font("TimesRoman", Font.BOLD, 20));
 		getPreferredSize();
 
@@ -86,6 +106,16 @@ public class Main extends Component {
 	    JButton btnNext = new JButton("Next");
 	    btnNext.setBounds(335, 41, 87, 23);
 	    f.getContentPane().add(btnNext);
+	    btnNext.addActionListener(new ActionListener() {
+	    	public void actionPerformed (ActionEvent e) {
+	    		if (!second) {
+		    		second = true;
+		    		txtPath.setText("");
+		    		text.setText("Side image");
+		    		f.repaint();
+	    		}
+	    	}
+	    });
 	    
 		JButton btnBrowse = new JButton("Browse");
 		btnBrowse.setBounds(10, 41, 87, 23);
@@ -108,7 +138,12 @@ public class Main extends Component {
 		        }
 		        
 				try {
-					img = ImageIO.read(new File(txtPath.getText()));
+					if (!second) {
+						img = ImageIO.read(new File(txtPath.getText()));
+					} 
+					else {
+						img2 = ImageIO.read(new File(txtPath.getText()));
+					}
 					f.repaint();
 				} catch (IOException i) {
 					System.out.println("Image unable to be read in");
