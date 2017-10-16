@@ -44,8 +44,9 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class Main extends Component {
 
-	BufferedImage img, img2;
+	private BufferedImage img, img2;
 	private JTextField txtPath;
+	private static JFrame f;
 
 	/**
 	 * Where the picture given is drawn and Cropped.
@@ -93,11 +94,15 @@ public class Main extends Component {
 		        
 				try {
 					img = ImageIO.read(new File(txtPath.getText()));
+					f.repaint();
 				} catch (IOException i) {
 					System.out.println("Image unable to be read in");
 				}
+				
 		      }
 		    });
+		
+		
 
 	}
 
@@ -107,7 +112,7 @@ public class Main extends Component {
 	 */
 	public Dimension getPreferredSize() {
 		if (img == null) {
-			return new Dimension(100, 100);
+			return new Dimension(700, 300);
 		} else {
 			return new Dimension(img.getWidth(null), img.getHeight(null));
 		}
@@ -116,13 +121,14 @@ public class Main extends Component {
 	public static void main(String[] args) {
 
 		//JFrame is the "frame" of the window
-		JFrame f = new JFrame("Load Image Sample");
+		 f = new JFrame("Load Image Sample");
 
 		f.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				System.exit(0);
 			}
 		});
+		
 
 		f.add(new Main(f));
 		f.pack();
