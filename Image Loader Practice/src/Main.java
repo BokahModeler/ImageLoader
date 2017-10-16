@@ -46,7 +46,9 @@ public class Main extends Component {
 
 	private BufferedImage img, img2;
 	private JTextField txtPath;
+	private JTextPane text;
 	private static JFrame f;
+	private boolean second = false;
 
 	/**
 	 * Where the picture given is drawn and Cropped.
@@ -58,7 +60,7 @@ public class Main extends Component {
 		}
 
 		g.drawImage(img, 0, 100, getWidth(), getHeight() - 100, this);
-		
+		g.setFont(new Font("TimesRoman", Font.BOLD, 20));
 		getPreferredSize();
 
 	}
@@ -71,7 +73,20 @@ public class Main extends Component {
 	    f.getContentPane().add(txtPath);
 	    txtPath.setColumns(10);
 	    
+	    text = new JTextPane();
+	    text.setBounds(170, 40, 100, 25);
+	    if (!second){
+	    	text.setText("Front image");
+	    } else {
+	    	text.setText("Side image");
+	    }
+	    text.setEditable(false);
+	    f.getContentPane().add(text);
 		
+	    JButton btnNext = new JButton("Next");
+	    btnNext.setBounds(335, 41, 87, 23);
+	    f.getContentPane().add(btnNext);
+	    
 		JButton btnBrowse = new JButton("Browse");
 		btnBrowse.setBounds(10, 41, 87, 23);
 		f.getContentPane().add(btnBrowse);
@@ -111,11 +126,7 @@ public class Main extends Component {
 	 * change size with the frame.
 	 */
 	public Dimension getPreferredSize() {
-		if (img == null) {
-			return new Dimension(700, 300);
-		} else {
-			return new Dimension(img.getWidth(null), img.getHeight(null));
-		}
+		return new Dimension(700, 300);
 	}
 
 	public static void main(String[] args) {
